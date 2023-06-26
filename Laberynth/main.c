@@ -35,7 +35,13 @@ int main(int argc, char *argv[])
     }
     else{
         printf("Laberynth is not correct\n");
+        exit(EXIT_FAILURE);
     }
-
+    Lab_p lab = createLab(in, width, length);
+    printf("Printing\n");
+    printLab(lab);
+    printf("Printed\n");
+    printCost(lab);
+    
 
 }
