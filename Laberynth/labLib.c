@@ -49,7 +49,6 @@ int checkLab(FILE *Lab, int *maxWid, int *maxLeng){
 }
 
 Lab_p createLab(FILE *Lab, int maxWid, int maxLen){
-    
 
     char currChar;
     int xindex=0;
@@ -62,6 +61,7 @@ Lab_p createLab(FILE *Lab, int maxWid, int maxLen){
     while((currChar = fgetc(Lab)) != EOF){
         if(currChar == '\n'){
             yindex++;
+            xindex = 0;
         }
         else{
 
@@ -79,7 +79,6 @@ Lab_p createLab(FILE *Lab, int maxWid, int maxLen){
             xindex++;
 
         }
-        printf("%c", currChar);
     }
     rewind(Lab);
     return Maze;
@@ -95,51 +94,149 @@ int printLab(Lab_p Maze)
     return 1;
 }
 
-int calcCosts(Lab_p maze, int currCost, int currx, int curry)
+void calcCosts(Lab_p maze, int currCost, int currx, int curry)
 {   
     switch (maze->lab[curry][currx])
     {
     case ' ':
         maze->cost[curry][currx] = currCost;
         break;
+    case 'S':
+        maze->cost[curry][currx] = 0;
+        break;
+    case '#':
+        maze->cost[curry][currx] = 999;
+        return;
     case 'X':
         maze->cost[curry][currx] = currCost;
         break;
   
     }
     currCost++;
-    if(currx+1 <= maze->maxwidth && currx -1 <= 0)
+    if(currx+1 <= maze->maxwidth && currx -1 >= 0)
     {
-        if(maze->lab[curry][currx+1] < currCost)
+        if(maze->cost[curry][currx+1] > currCost)
         {
             calcCosts(maze, currCost, currx+1, curry);
         }
-        if(maze->lab[curry][currx-1] < currCost)
+        if(maze->cost[curry][currx-1] > currCost)
         {
             calcCosts(maze, currCost, currx-1, curry);
         }
     }
-    if(curry+1 <= maze->maxlen && curry -1 <= 0)
+    if(curry+1 <= maze->maxlen && curry -1 >= 0)
     {
-        if(maze->lab[curry+1][currx] < currCost)
+        if(maze->cost[curry+1][currx] > currCost)
         {
             calcCosts(maze, currCost, currx, curry+1);
         }
-        if(maze->lab[curry-1][currx] < currCost)
+        if(maze->cost[curry-1][currx] > currCost)
         {
             calcCosts(maze, currCost, currx, curry-1);
         }
     }
-    return 1;
+    /*
+    //unten Links
+    if(curry+1 <= maze->maxlen && currx -1 >= 0)
+    {
+        if(maze->cost[curry+1][currx-1] > currCost)
+        {
+            calcCosts(maze, currCost, currx-1, curry+1);
+        }
+    }
+    //oben Links
+    if(curry-1 <= maze->maxlen && currx -1 >= 0)
+    {
+        if(maze->cost[curry-1][currx-1] > currCost)
+        {
+            calcCosts(maze, currCost, currx-1, curry-1);
+        }
+    }
+    //unten rechts
+    if(curry+1 <= maze->maxlen && currx +1 >= 0)
+    {
+        if(maze->cost[curry+1][currx+1] > currCost)
+        {
+            calcCosts(maze, currCost, currx+1, curry+1);
+        }
+    }
+    //oben Rechts
+    if(curry-1 <= maze->maxlen && currx +1 >= 0)
+    {
+        if(maze->cost[curry-1][currx+1] > currCost)
+        {
+            calcCosts(maze, currCost, currx-1, curry+1);
+        }
+    }*/
+    return;
 }
 
 int printCost(Lab_p Maze)
 {
     for(int i = 0; i <= Maze->maxlen; i++){
         for(int e = 0; e <= Maze->maxwidth; e++){
-            printf("%c", Maze->cost[i][e]);
+            printf("%d%d%d", Maze->cost[i][e]/100, Maze->cost[i][e]/10, Maze->cost[i][e]);
         }
         printf("\n");
     }
     return 1;
+}
+
+
+int initCost(Lab_p Maze){
+    for(int i = 0; i <= Maze->maxlen; i++){
+        for(int e = 0; e <= Maze->maxwidth; e++){
+            Maze->cost[i][e]=998;
+        }
+    }
+    return 1;
+}
+
+void showWay(Lab_p Maze, int endx, int endy)
+{
+    printf("current Cords x: %d, y: %d\n", endx, endy);
+    int currCost = Maze->cost[endy][endx];
+    Maze->lab[endy][endx] = '.';
+
+    //oben
+    if(Maze->cost[endy-1][endx] == currCost-1)
+    {
+        showWay(Maze, endx, endy-1);
+    }
+    //unten
+    else if(Maze->cost[endy+1][endx] == currCost-1)
+    {
+        showWay(Maze, endx, endy+1);
+    }
+    //Links
+    else if(Maze->cost[endy][endx-1] == currCost-1)
+    {
+        showWay(Maze, endx-1, endy);
+    }
+    //Rechts
+    else if(Maze->cost[endy][endx+1] == currCost-1)
+    {
+        showWay(Maze, endx+1, endy);
+    }
+    /*//unten Links
+    else if(Maze->cost[endy+1][endx-1] == currCost-1)
+    {
+        showWay(Maze, endx+1, endy);
+    }
+    //oben Links
+    else if(Maze->cost[endy-1][endx-1] == currCost-1)
+    {
+        showWay(Maze, endx+1, endy);
+    }
+    //unten Rechts
+    else if(Maze->cost[endy+1][endx+1] == currCost-1)
+    {
+        showWay(Maze, endx+1, endy);
+    }
+    //oben Rechts
+    else if(Maze->cost[endy-1][endx+1] == currCost-1)
+    {
+        showWay(Maze, endx+1, endy);
+    }
+    */
 }

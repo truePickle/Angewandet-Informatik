@@ -6,7 +6,7 @@
 typedef struct Laberynth
 {
     char lab[258][256];
-    char cost[256][256];
+    int cost[256][256];
     int maxwidth;
     int maxlen;
     int startx;
@@ -19,7 +19,9 @@ typedef struct Laberynth
 int checkLab(FILE *Lab, int *maxWid, int *maxLeng);
 Lab_p createLab(FILE *Lab, int maxWid, int maxLen);
 int printLab(Lab_p Maze);
-int calcCosts(Lab_p maze, int currCost, int currx, int curry);
+void calcCosts(Lab_p maze, int currCost, int currx, int curry);
 int printCost(Lab_p Maze);
+int initCost(Lab_p Maze);
+void showWay(Lab_p Maze, int endx, int endy);
 
 #endif
