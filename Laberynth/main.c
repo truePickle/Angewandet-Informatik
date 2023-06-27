@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
         printf("The max width is %d\n", width);
     }
     else{
-        printf("Laberynth is not correct\n");
+        printf("Laberynth is not valid\n");
         exit(EXIT_FAILURE);
     }
     Lab_p lab = createLab(in, width, length);
@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
     initCost(lab);
     calcCosts(lab, 0, lab->startx, lab->starty);
 
-    showWay(lab, lab->endx, lab->endy, true);
+    showWay(lab, lab->endx, lab->endy, false);
+    printLab(lab);
 
 }

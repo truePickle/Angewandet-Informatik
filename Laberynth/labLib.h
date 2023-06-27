@@ -6,8 +6,8 @@
 
 typedef struct Laberynth
 {
-    char lab[258][256];
-    int cost[256][256];
+    char lab[2048][2048];
+    int cost[2048][2048];
     int maxwidth;
     int maxlen;
     int startx;

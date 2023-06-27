@@ -117,7 +117,7 @@ void calcCosts(Lab_p maze, int currCost, int currx, int curry)
         maze->cost[curry][currx] = 0;
         break;
     case '#':
-        maze->cost[curry][currx] = 999;
+        maze->cost[curry][currx] = 999000;
         return;
     case 'X':
         maze->cost[curry][currx] = currCost;
@@ -197,7 +197,7 @@ int printCost(Lab_p Maze)
 int initCost(Lab_p Maze){
     for(int i = 0; i <= Maze->maxlen; i++){
         for(int e = 0; e <= Maze->maxwidth; e++){
-            Maze->cost[i][e]=998;
+            Maze->cost[i][e]=998000;
         }
     }
     return 1;
