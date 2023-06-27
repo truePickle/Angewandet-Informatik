@@ -38,14 +38,10 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
     Lab_p lab = createLab(in, width, length);
-    initCost(lab);
-    printf("calculating Costs\n");
-    calcCosts(lab, 0, lab->startx, lab->starty);
-    printf("claculated costs\n");
-    printLab(lab);
-    printf("\n");
-    showWay(lab, lab->endx, lab->endy);
-    printLab(lab);
     
+    initCost(lab);
+    calcCosts(lab, 0, lab->startx, lab->starty);
+
+    showWay(lab, lab->endx, lab->endy, true);
 
 }

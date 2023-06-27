@@ -2,6 +2,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
+
+void delay(int milliseconds)
+{
+    long pause;
+    clock_t now,then;
+
+    pause = milliseconds*(CLOCKS_PER_SEC/1000);
+    now = then = clock();
+    while( (now-then) < pause )
+        now = clock();
+}
 
 int checkLab(FILE *Lab, int *maxWid, int *maxLeng){
     bool hasEnd = false;
@@ -135,7 +147,6 @@ void calcCosts(Lab_p maze, int currCost, int currx, int curry)
             calcCosts(maze, currCost, currx, curry-1);
         }
     }
-    /*
     //unten Links
     if(curry+1 <= maze->maxlen && currx -1 >= 0)
     {
@@ -145,7 +156,7 @@ void calcCosts(Lab_p maze, int currCost, int currx, int curry)
         }
     }
     //oben Links
-    if(curry-1 <= maze->maxlen && currx -1 >= 0)
+    if(curry-1 >= 0 && currx -1 >= 0)
     {
         if(maze->cost[curry-1][currx-1] > currCost)
         {
@@ -153,7 +164,7 @@ void calcCosts(Lab_p maze, int currCost, int currx, int curry)
         }
     }
     //unten rechts
-    if(curry+1 <= maze->maxlen && currx +1 >= 0)
+    if(curry+1 <= maze->maxlen && currx +1 <= maze->maxwidth)
     {
         if(maze->cost[curry+1][currx+1] > currCost)
         {
@@ -161,13 +172,13 @@ void calcCosts(Lab_p maze, int currCost, int currx, int curry)
         }
     }
     //oben Rechts
-    if(curry-1 <= maze->maxlen && currx +1 >= 0)
+    if(curry-1 >= 0 && currx +1 <= maze->maxwidth)
     {
         if(maze->cost[curry-1][currx+1] > currCost)
         {
-            calcCosts(maze, currCost, currx-1, curry+1);
+            calcCosts(maze, currCost, currx+1, curry-1);
         }
-    }*/
+    }
     return;
 }
 
@@ -175,7 +186,7 @@ int printCost(Lab_p Maze)
 {
     for(int i = 0; i <= Maze->maxlen; i++){
         for(int e = 0; e <= Maze->maxwidth; e++){
-            printf("%d%d%d", Maze->cost[i][e]/100, Maze->cost[i][e]/10, Maze->cost[i][e]);
+            printf("%03d ", Maze->cost[i][e]);
         }
         printf("\n");
     }
@@ -192,51 +203,67 @@ int initCost(Lab_p Maze){
     return 1;
 }
 
-void showWay(Lab_p Maze, int endx, int endy)
+void showWay(Lab_p Maze, int endx, int endy, bool printSteps)
 {
-    printf("current Cords x: %d, y: %d\n", endx, endy);
     int currCost = Maze->cost[endy][endx];
-    Maze->lab[endy][endx] = '.';
+    if(printSteps)
+    {
+        printLab(Maze);
+        delay(3);
+    }
+    if(Maze->lab[endy][endx] == 'S')
+    {
+        printf("Maze solved\n");
+        return;
+    }
+    else if(Maze->lab[endy][endx] != 'X')
+    {
+        Maze->lab[endy][endx] = '.';
+    }
 
     //oben
     if(Maze->cost[endy-1][endx] == currCost-1)
     {
-        showWay(Maze, endx, endy-1);
+        showWay(Maze, endx, endy-1, printSteps);
     }
     //unten
     else if(Maze->cost[endy+1][endx] == currCost-1)
     {
-        showWay(Maze, endx, endy+1);
+        showWay(Maze, endx, endy+1, printSteps);
     }
     //Links
     else if(Maze->cost[endy][endx-1] == currCost-1)
     {
-        showWay(Maze, endx-1, endy);
+        showWay(Maze, endx-1, endy, printSteps);
     }
     //Rechts
     else if(Maze->cost[endy][endx+1] == currCost-1)
     {
-        showWay(Maze, endx+1, endy);
+        showWay(Maze, endx+1, endy, printSteps);
     }
-    /*//unten Links
+    //unten Links
     else if(Maze->cost[endy+1][endx-1] == currCost-1)
     {
-        showWay(Maze, endx+1, endy);
+        showWay(Maze, endx-1, endy+1, printSteps);
     }
     //oben Links
     else if(Maze->cost[endy-1][endx-1] == currCost-1)
     {
-        showWay(Maze, endx+1, endy);
+        showWay(Maze, endx-1, endy-1, printSteps);
     }
     //unten Rechts
     else if(Maze->cost[endy+1][endx+1] == currCost-1)
     {
-        showWay(Maze, endx+1, endy);
+        showWay(Maze, endx+1, endy+1, printSteps);
     }
     //oben Rechts
     else if(Maze->cost[endy-1][endx+1] == currCost-1)
     {
-        showWay(Maze, endx+1, endy);
+        showWay(Maze, endx+1, endy-1, printSteps);
     }
-    */
+    else
+    {
+        printf("Maze is unsolvable\n");
+    }
+    return;
 }

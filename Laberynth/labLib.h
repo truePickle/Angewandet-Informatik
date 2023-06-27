@@ -2,6 +2,7 @@
 #define LABLIB_H
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef struct Laberynth
 {
@@ -22,6 +23,6 @@ int printLab(Lab_p Maze);
 void calcCosts(Lab_p maze, int currCost, int currx, int curry);
 int printCost(Lab_p Maze);
 int initCost(Lab_p Maze);
-void showWay(Lab_p Maze, int endx, int endy);
+void showWay(Lab_p Maze, int endx, int endy, bool printSteps);
 
 #endif
