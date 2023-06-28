@@ -34,7 +34,6 @@ int checkLab(FILE *Lab, int *maxWid, int *maxLeng){
             tempWidth = 0;
         }
         else{
-            tempWidth++;
 
             if(currChar == 'X')
             {  
@@ -50,6 +49,7 @@ int checkLab(FILE *Lab, int *maxWid, int *maxLeng){
                 }
                 hasStart = true;
             }
+            tempWidth++;
         }
     }
 
@@ -102,6 +102,17 @@ int printLab(Lab_p Maze)
             printf("%c", Maze->lab[i][e]);
         }
         printf("\n");
+    }
+    return 1;
+}
+
+int printLabtoFile(Lab_p Maze, FILE *output)
+{
+    for(int i = 0; i <= Maze->maxlen; i++){
+        for(int e = 0; e <= Maze->maxwidth; e++){
+            fprintf(output, "%c", Maze->lab[i][e]);
+        }
+        fprintf(output, "\n");
     }
     return 1;
 }

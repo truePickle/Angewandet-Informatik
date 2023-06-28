@@ -28,6 +28,7 @@ int main(int argc, char *argv[])
     int width = 0;
     int length = 0;
     bool valid = checkLab(in, &width, &length);
+    width--;
     if(valid){
         printf("Laberynth is valid\n");
         printf("The max len is %d\n", length);
@@ -44,5 +45,7 @@ int main(int argc, char *argv[])
 
     showWay(lab, lab->endx, lab->endy, false);
     printLab(lab);
+    //FILE *output = fopen("output.txt", "w");
+    //printLabtoFile(lab,output);
 
 }

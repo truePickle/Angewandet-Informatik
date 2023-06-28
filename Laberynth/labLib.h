@@ -20,6 +20,7 @@ typedef struct Laberynth
 int checkLab(FILE *Lab, int *maxWid, int *maxLeng);
 Lab_p createLab(FILE *Lab, int maxWid, int maxLen);
 int printLab(Lab_p Maze);
+int printLabtoFile(Lab_p Maze, FILE *output);
 void calcCosts(Lab_p maze, int currCost, int currx, int curry);
 int printCost(Lab_p Maze);
 int initCost(Lab_p Maze);
