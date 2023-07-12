@@ -45,6 +45,7 @@ int main(int argc, char *argv[])
 
     showWay(lab, lab->endx, lab->endy, false);
     printLab(lab);
+    printf("Cost %d\n", lab->cost[lab->endy][lab->endx]);
     //FILE *output = fopen("output.txt", "w");
     //printLabtoFile(lab,output);
 
