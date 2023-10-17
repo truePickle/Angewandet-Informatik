@@ -14,8 +14,6 @@ void copyArr(int *toCopylist, int *list, int length);
 void swap(int *a, int *b);
 void heapify(int arr[], int len, int i);
 void heapSort(int arr[], int len);
-int min(int x, int y);
-void bottomMerge(int A[], int temp[], int from, int mid, int to);
-void BottomMergesort(int A[], int temp[], int low, int high);
+void bottomMerge(int *list, int length);
 
 #endif

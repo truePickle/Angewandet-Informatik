@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
         
     }
     int list[1000000];
-    int temp[1000000];
+    //int temp[1000000];
     int length = 0;
 
     fillArr(in , list, &length);
@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
     else if (bottom)
     {
         clock_t timeBefore = clock();
-        BottomMergesort(list, temp, 0, length -1);
+        bottomMerge(list, length-1);
         clock_t timeAfter = clock();
         double timeToSort = ((double)timeAfter - timeBefore)/CLOCKS_PER_SEC;
 
@@ -153,6 +153,7 @@ int main(int argc, char *argv[])
         }
         printf("Time to bottomMergeSort:%f\n", timeToSort);
     }
+    printList(list, length);
     
 
 }

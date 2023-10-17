@@ -152,7 +152,6 @@ void copyArr(int *toCopylist, int *list, int length) {
     }
   }
   
-  // Main function to do heap sort
   void heapSort(int arr[], int len) {
     // Build max heap
     for (int i = len / 2 - 1; i >= 0; i--)
@@ -168,61 +167,19 @@ void copyArr(int *toCopylist, int *list, int length) {
   }
 
 //bottomUpMerge
-#define N 10
- 
-// Utility function to find a minimum of two numbers
-int min(int x, int y) {
-    return (x < y) ? x : y;
-}
- 
-// Merge two sorted subarrays `A[from…mid]` and `A[mid+1…to]`
-void bottomMerge(int A[], int temp[], int from, int mid, int to)
+int min(int a, int b)
 {
-    int k = from, i = from, j = mid + 1;
- 
-    // loop till no elements are left in the left and right runs
-    while (i <= mid && j <= to)
-    {
-        if (A[i] < A[j]) {
-            temp[k++] = A[i++];
-        }
-        else {
-            temp[k++] = A[j++];
-        }
-    }
- 
-    // copy remaining elements
-    while (i < N && i <= mid) {
-        temp[k++] = A[i++];
-    }
- 
-    /* no need to copy the second half (since the remaining items
-       are already in their correct position in the temporary array) */
- 
-    // copy back to the original array to reflect sorted order
-    for (int i = from; i <= to; i++) {
-        A[i] = temp[i];
-    }
+    return (a < b) ? a : b;
 }
- 
-// Iteratively sort subarray `A[low…high]` using a temporary array
-void BottomMergesort(int A[], int temp[], int low, int high)
+
+void bottomMerge(int *list, int length)
 {
-    // divide the array into blocks of size `m`
-    // m = [1, 2, 4, 8, 16…]
-    for (int m = 1; m <= high - low; m = 2*m)
+    int width, j =0;
+    for(width=1; width <= length; width=width*2)
     {
-        // for m = 1, i = 0, 2, 4, 6, 8…
-        // for m = 2, i = 0, 4, 8…
-        // for m = 4, i = 0, 8…
-        // …
-        for (int i = low; i < high; i += 2*m)
+        for(j=0; j <= length+width; j=j+2*width)
         {
-            int from = i;
-            int mid = i + m - 1;
-            int to = min(i + 2*m - 1, high);
- 
-            bottomMerge(A, temp, from, mid, to);
+            merge(list, j, min(j+width, length), min(j+2*width, length));
         }
     }
 }
